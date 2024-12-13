@@ -8,51 +8,53 @@ fun main() {
 
         var result = 1L
 
-        if ( cache.containsKey( key )) {
-            result = cache.getValue( key )
-        } else if ( times > 0 ) {
-            result = if ( stone == 0L ) {
-                blink( 1L, times - 1 )
-            } else if ( stone == 1L ) {
-                blink( 2024L, times - 1)
+        if ( times > 0 ) {
+            result = if ( cache.containsKey( key )) {
+                cache.getValue( key )
             } else {
-                stone.toString().length.let { digit ->
-                    if ( digit % 2 == 0 ) {
-                        10F.pow( digit / 2 ).toLong().let { divisor ->
-                            listOf(
-                                stone.div( divisor ), stone.mod( divisor )
-                            ).sumOf { changed ->
-                                blink( changed, times - 1 )
+                if ( stone == 0L ) {
+                    blink( 1L, times - 1 )
+                } else if ( stone == 1L ) {
+                    blink( 2024L, times - 1)
+                } else {
+                    stone.toString().length.let { digit ->
+                        if ( digit % 2 == 0 ) {
+                            10F.pow( digit / 2 ).toLong().let { divisor ->
+                                listOf(
+                                    stone.div( divisor ), stone.mod( divisor )
+                                ).sumOf { changed ->
+                                    blink( changed, times - 1 )
+                                }
                             }
-                        }
-                    } else {
-                        blink( stone * 2024, times - 1 )
-                    }
-                }
-            }.also {
-                cache.put( key, it )
-            } // result = if - else if - else.also
-        } // if - else if
+                        } else {
+                            blink( stone * 2024, times - 1 )
+                        } // if - else
+                    } // Long.toString.length.let
+                }.also {
+                    cache.put( key, it )
+                } // if - else if - else.also
+            } // result = if - else
+        } // if
 
         return result
     } // fun blink( Long )
 
+    fun stoneCount(
+        input: List<String>, blinkTimes: Int
+    ) = input.first().split( " " ).map {
+        it.toLong()
+    }.sumOf { stone ->
+        blink(stone, blinkTimes )
+    } // fun stoneCount( List<String>, Int ) ...
+
     fun part1(input: List<String>): Long {
-        return input.first().split( " " ).map {
-            it.toLong()
-        }.sumOf { stone ->
-            blink(stone, 25 )
-        } // return: List<String>.first.split.map.sumOf
+        return stoneCount( input, 25 )
 
 //        return input.size
     } // fun part1( List<String>)
 
     fun part2(input: List<String>): Long {
-        return input.first().split( " " ).map {
-            it.toLong()
-        }.sumOf { stone ->
-            blink(stone, 75 )
-        } // return: List<String>.first.split.map.sumOf
+        return  stoneCount( input, 75 )
 
 //        return input.size
     } // fun part2( List<String>)
