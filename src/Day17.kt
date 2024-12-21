@@ -43,7 +43,7 @@ fun main() {
                 } else if ( program[ pointer ].first == 7 ) {
                     registerC = registerA / 2F.pow(
                         combo( program[ pointer ].second )).toInt()
-                } // if - else if x 6
+                } // if - else_if x 6
 
                 pointer++
             } // if - else
@@ -101,11 +101,11 @@ fun main() {
         var snapshot: Snapshot
         var possibles: List<Snapshot>
 
-        while ( runList.size > 0 ) {
+        while ( runList.isNotEmpty()) {
             snapshot = runList.removeAt( 0 )
             possibles = snapshot.possibleInput()
 
-            if ( possibles.size > 0 ) {
+            if ( possibles.isNotEmpty()) {
                 possibles.forEach { s ->
                     if ( s.outputIndex == -1 ) {
                         programCopied.add( s.beginValue / 8 )
